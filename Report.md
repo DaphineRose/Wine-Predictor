@@ -118,12 +118,6 @@ We can see that columns relate to region now has almost no missing value and we 
 
 New column-produced year of wine
 
-Word cloud of description column:
-
-<img src="img\a7d52a295f2a5b36.png" alt="img\a7d52a295f2a5b36.png"  width="701.38" />
-
-Word cloud(frequency of description column)
-
 <img src="img\6f3a6663a09a86de.png" alt="img\6f3a6663a09a86de.png"  width="536.62" />
 
 Country percentage(top 20 countries)
@@ -171,6 +165,12 @@ The result like follow:
  'doe': 197,
  'petit': 198,
  'tangi': 199}
+ 
+Word cloud of description column:
+
+<img src="img\a7d52a295f2a5b36.png" alt="img\a7d52a295f2a5b36.png"  width="701.38" />
+
+Word cloud(frequency of description column)
 
 For other category columns, we use one hot encoding to convert them into numeric columns. However, there are too many unique values in some columns and converting all of them will resulting in enlargement of columns. To solve this problem, we decide to select certain values that cover most percentage of the range(like 90%).  To make sure we cover all of the data, replacing rest of the values with other can be a solution. Then, we convert those values into numeric type.  We create get_dummy function to select part of value, replace rest with other and convert all category columns.
 
