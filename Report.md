@@ -253,7 +253,7 @@ def to_dummy(data_copy,col,cut):
 
 <img src="img\a6a56374d9d11b85.png" alt="img\a6a56374d9d11b85.png"  width="926.86" />
 
-After we process all columns, the dataframe become too large for future analysis(over 5000 columns). To reduce the number of columns without causing loss to prediction, we use PCA and decrease number of columns to 500.
+After we process all columns, the dataframe become too large for future analysis(over 5000 columns). To reduce the number of columns without causing much loss to prediction, we use PCA and decrease number of columns to 500.
 
 PCA introduction:
 
