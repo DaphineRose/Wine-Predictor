@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wine Flask App</title>
+<body>
+
+<h2>Wine Price Predictor</h2>
+</body>
+<div class = "ml-container">
+<form action="{{ url_for('predict')}}" method = "POST">
+<p> Enter the wine title here</p>
+<textarea name="title" rows="4" cols="50"></textarea>
+<p> Enter the points here</p>
+<textarea name="points" rows="4" cols="50"></textarea>
+<p> Enter the wine designation here</p>
+<textarea name="designation" rows="4" cols="50"></textarea>
+<p> Enter the wine description here</p>
+<textarea name="description" rows="4" cols="50"></textarea>
+<p> Enter the wine variety here</p>
+<textarea name="variety" rows="4" cols="50"></textarea>
+<p> Enter the winery name here</p>
+<textarea name="winery" rows="4" cols="50"></textarea>
+<p> Enter the taster_name here</p>
+<textarea name="taster_name" rows="4" cols="50"></textarea>
+<p> Enter the country of origin here</p>
+<textarea name="country" rows="4" cols="50"></textarea>
+<p> Enter the province here</p>
+<textarea name="province" rows="4" cols="50"></textarea>
+<input type = "submit" class="btn-info" value="predict">
+</div>
+</form>
+</head>
+</html>
