@@ -193,6 +193,10 @@ Title columns example:
 <img src="img\5d645449edb924de.png" alt="img\5d645449edb924de.png"  width="1819.13" />
 
 For description column, we convert it to a BOW. 
+
+> Delicate aromas of crushed white peony, lemon verbena, chalk and apple flesh dance in the bouquet of this attractive sparkling wine, while flavors of green apple, yellow plum and lemon zest are direct and mouthwatering. The palate is fresh and zippy, with a lively mousse and bright acidity that lead into a medium-length but seriously refreshing finish.
+
+
 First, we split all descriptions in to independent words and import nltk package to drop all stop-words. Then, we calculate frequency of each words after which we select top 200 listed words.
 
 The result like follow:
