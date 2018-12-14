@@ -40,17 +40,55 @@ The data was scraped from Wine Enthusiast during the week of June 15th, 2017.( [
 
 
 
-#### 1. Data cleaning
-
-|Unnamed:0|country|description|designation|points|price|province|region_1|region_2|taster_name|taster_twitter_handle|title|variety|winery|
-|------ | ------ | ------ |------ | ------ | ------ |------ | ------ | ------ |------ | ------ | ------ |------ | ------ |
-|0|Italy|Aromas include tropical fruit, broom, brimston...|Vulkà Bianco|87|NaN|Sicily & Sardinia|Etna|NaN|Kerin O’Keefe|@kerinokeefe|	Nicosia 2013 Vulkà Bianco (Etna)|White Blend|Nicosia|
-|1|Portugal|This is ripe and fruity, a wine that is smooth...	|Avidagos	|87	|15.0|	Douro|	NaN|	NaN|	Roger Voss|	@vossroger|Quinta dos Avidagos 2011 Avidagos Red (Douro)	|Portuguese Red|	Quinta dos Avidagos|
+#### Data cleaning
 
 
 The original dataset has 13 columns. Original data information:
 
-There are lots of missing values in this dataset and it will cause huge loss if we just drop all of them. We noticed that this dataset contains several columns about location so that it is possible to use other columns' information to fill missing values and finally combine those relative columns. Region_1 and Region_2 columns describe detail area where the wine are produced and we can use information from title to replace missing value. Here is the code to split title column.
+
+|Unnamed:0|country|description|designation|points|price|province|region_1|region_2|taster_name|taster_twitter_handle|title|variety|winery|
+|------ | ------ | ------ |------ | ------ | ------ |------ | ------ | ------ |------ | ------ | ------ |------ | ------ |
+|0|Italy|Aromas include tropical fruit, broom, brimston...|Vulkà Bianco|87|NaN|Sicily & Sardinia|Etna|NaN|Kerin O’Keefe|@kerinokeefe|  Nicosia 2013 Vulkà Bianco (Etna)|White Blend|Nicosia|
+|1|Portugal|This is ripe and fruity, a wine that is smooth...  |Avidagos  |87  |15.0|  Douro|  NaN|  NaN|  Roger Voss|  @vossroger|Quinta dos Avidagos 2011 Avidagos Red (Douro)  |Portuguese Red|  Quinta dos Avidagos|
+
+
+
+There are lots of missing values, we treat them in different ways.
+
+
+|  |column_name| missing_count|
+|------ | ------ | ------ |
+|0| country | 59|
+|1|  description|  0|
+|2 | designation | 34779|
+|3 | points| 0|
+|4 | price | 8996|
+|5  province | 59|
+|6 | region_1 | 19575|
+|7  |region_2 |70683|
+|8 | taster_name | 24496|
+|9 | taster_twitter_handle  |29416|
+|10 | title | 0|
+|11 | variety | 1|
+|12 | winery | 0|
+
+For the target column('price'), we just drop out the row.
+
+```
+data=origin_data.dropna(axis=0,subset=['price'])
+```
+
+For numerical columns, we fill null by mean.
+
+```python
+data['year'].fillna(2011,inplace=True)
+data['points'].fillna(88,inplace=True)
+```
+
+For categorical columns, we will keep the null value, make NA a new level.
+
+
+We noticed that this dataset contains several columns about location so that it is possible to use other columns' information to fill missing values and finally combine those relative columns. Region_1 and Region_2 columns describe detail area where the wine are produced and we can use information from title to replace missing value. Here is the code to split title column.
 
 ```
 def extract_title(title):
@@ -98,8 +136,6 @@ def extract_title(title):
     return ex_title1,ex_title2,ex_title3,ex_title4
 ```
 
-Dataset information after split:
-
 Then, we combine columns relate to area into column ex_title3:
 
 ```
@@ -114,9 +150,9 @@ for i in ii:
             data.loc[i,'ex_title3']=tmp   
 ```
 
-We can see that columns relate to region now has almost no missing value and we can drop those missing ones. For column year, we filling all with mean value. For designation and taster_namer, we will process them in next steps.
+We can see that columns relate to region now has almost no missing value and we can drop those missing ones. 
 
-#### 2. Exploratory Data Analysis
+#### Exploratory Data Analysis
 
 <img src="img\6460012b1fdb0b4e.png" alt="img\6460012b1fdb0b4e.png"  width="519.50" />
 
@@ -146,7 +182,7 @@ Relation between country and price
 
 Average points for every country
 
-####         3. Feature Selection
+#### Feature Engineering
 
 There are huge amount of category columns in this dataset. 
 
@@ -156,7 +192,8 @@ Title columns example:
 
 <img src="img\5d645449edb924de.png" alt="img\5d645449edb924de.png"  width="1819.13" />
 
-For description column, we use NLP to process it. First, we split all descriptions in to independent words and import nltk package to drop all stop-words. Then, we calculate frequency of each words after which we select top 200 listed words.
+For description column, we convert it to a BOW. 
+First, we split all descriptions in to independent words and import nltk package to drop all stop-words. Then, we calculate frequency of each words after which we select top 200 listed words.
 
 The result like follow:
 
@@ -176,7 +213,13 @@ Word cloud of description column:
 
 Word cloud(frequency of description column)
 
-For other category columns, we use one hot encoding to convert them into numeric columns. However, there are too many unique values in some columns and converting all of them will resulting in enlargement of columns. To solve this problem, we decide to select certain values that cover most percentage of the range(like 90%).  To make sure we cover all of the data, replacing rest of the values with other can be a solution. Then, we convert those values into numeric type.  We create get_dummy function to select part of value, replace rest with other and convert all category columns.
+For other category columns, we use one hot encoding to convert them into numeric columns. However, there are too many unique values in some columns and converting all of them will resulting in enlargement of columns.
+
+|country|  description | designation | points |  province|  region_1|  region_2 | taster_name | taster_twitter_handle | title | variety | winery|
+|------ | ------ | ------ |------ | ------ | ------ |------ | ------ | ------ |------ |------ |------ | 
+|1 | 42 | 111567 | 35776 | 21  | 422  |1204 | 17 | 19 | 15 | 110638| 697  |15855|
+
+To solve this problem, we decide to select certain values that cover most percentage of the range(like 90%), for the long tails, we convert them to a new value 'other'. Then, we convert those values into numeric type.  We create a function to_dummy to do this automatically.
 
 Here is code for this function:
 
@@ -225,39 +268,39 @@ Date shape after using PCA:
 
 (120975, 500)
 
-#### 4. Model Selection, Training and  Evaluation
+#### Model Selection, Training and  Evaluation
 
 In model selection part, we test follow models: Decision Tree Regression, Random Forest Regression and Gradient Boosting Regression and NLP. After comparing result several models, we select MLP as our model.
 
-Here are result of each model:
-
-Decision Tree Regression:
-
-DecisionTreeRegressor(criterion='mse', max_depth=30, max_features=50,
-           max_leaf_nodes=None, min_impurity_decrease=0.0,
-           min_impurity_split=None, min_samples_leaf=1,
-           min_samples_split=2, min_weight_fraction_leaf=0.0,
-           presort=False, random_state=None, splitter='best')
+Here are result of some models:
 
 Random Forest Regression:
+```
+rf_reg = RandomForestRegressor(max_depth=50,max_features=100,n_estimators=30,verbose=2)
+```
 
+```
 Score: 0.42920096985536543
 Score for Train: 0.8365994461786193
 RMS: 29.050122262155245
 MAPE: 42.119624733119124
 R2: 0.4292009698553655
 MAE: 12.795948103605777
-
+```
 <img src="img\41bcc0b5724b140b.png" alt="img\41bcc0b5724b140b.png"  width="602.00" />
 
 Gradient Boosting Regression:
 
-Score: 0.33843386322790747
-Score for Train: 0.9133864178492134
+```
+gb_reg = GradientBoostingRegressor(max_depth=20,max_features=20,n_estimators=15,verbose=2,learning_rate=0.1)
+```
 
 ```
- 
+Score: 0.33843386322790747
+Score for Train: 0.9133864178492134
 ```
+ 
+
 
 Keras introduction:
 
@@ -319,13 +362,28 @@ Trainable params: 555,341
 Non-trainable params: 2,200
 _________________________________________________________________
 
+```
+optimizer = optimizers.adam(lr=learning_rate,decay=decay)
+model.compile(loss='mse',
+              optimizer=optimizer, 
+              metrics=['mae','mse'])
+history=model.fit(X, Y,
+          batch_size=256,
+          epochs=50,
+          verbose=1,
+          callbacks=cb,
+          validation_split=0.3,
+          shuffle=True)
+```
+
+
 <img src="img\55e3068d4a8d096a.png" alt="img\55e3068d4a8d096a.png"  width="493.00" />
 
 <img src="img\29f3a39786f4761d.png" alt="img\29f3a39786f4761d.png"  width="504.00" />
 
 <img src="img\25875f7d5e3f8787.png" alt="img\25875f7d5e3f8787.png"  width="504.00" />
 
-#### 5.  Model Deployment 
+####  Model Deployment 
 
 We use flask to design a web application and deploy it on AWS.
 
@@ -428,5 +486,4 @@ http://18.191.144.104/
 [9].  [http://setosa.io/ev/principal-component-analysis/](http://setosa.io/ev/principal-component-analysis/) 
 
 [10].  [https://keras.io/](https://keras.io/)
-
 
