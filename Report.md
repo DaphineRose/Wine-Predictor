@@ -42,6 +42,10 @@ The data was scraped from Wine Enthusiast during the week of June 15th, 2017.( [
 
 #### 1. Data cleaning
 
+|Unnamed:0|country|description|designation|points|price|province|region_1|region_2|taster_name|taster_twitter_handle|title|variety|winery|
+|------ | ------ | ------ |------ | ------ | ------ |------ | ------ | ------ |------ | ------ | ------ |------ | ------ |
+|0|Italy|Aromas include tropical fruit, broom, brimston...|Vulkà Bianco|87|NaN|Sicily & Sardinia|Etna|NaN|Kerin O’Keefe|@kerinokeefe|	Nicosia 2013 Vulkà Bianco (Etna)|White Blend|Nicosia|
+|1|Portugal|This is ripe and fruity, a wine that is smooth...	|Avidagos	|87	|15.0|	Douro|	NaN|	NaN|	Roger Voss|	@vossroger|Quinta dos Avidagos 2011 Avidagos Red (Douro)	|Portuguese Red|	Quinta dos Avidagos|
 
 
 The original dataset has 13 columns. Original data information:
