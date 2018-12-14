@@ -221,7 +221,7 @@ For other category columns, we use one hot encoding to convert them into numeric
 
 |country|  description | designation | points |  province|  region_1|  region_2 | taster_name | taster_twitter_handle | title | variety | winery|
 |------ | ------ | ------ |------ | ------ | ------ |------ | ------ | ------ |------ |------ |------ | 
-|1 | 42 | 111567 | 35776 | 21  | 422  |1204 | 17 | 19 | 15 | 110638| 697  |15855|
+|1 | 42 | 35776 | 21  | 422  |1204 | 17 | 19 | 15 | 110638| 697  |15855|
 
 To solve this problem, we decide to select certain values that cover most percentage of the range(like 90%), for the long tails, we convert them to a new value 'other'. Then, we convert those values into numeric type.  We create a function to_dummy to do this automatically.
 
