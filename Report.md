@@ -63,7 +63,7 @@ There are lots of missing values, we treat them in different ways.
 |2 | designation | 34779|
 |3 | points| 0|
 |4 | price | 8996|
-|5  province | 59|
+|5 | province | 59|
 |6 | region_1 | 19575|
 |7  |region_2 |70683|
 |8 | taster_name | 24496|
@@ -136,7 +136,7 @@ def extract_title(title):
     return ex_title1,ex_title2,ex_title3,ex_title4
 ```
 
-Then, we combine columns relate to area into column ex_title3:
+Then, we combine columns relate to area into one column ex_title3:
 
 ```
  tmp=0
@@ -150,7 +150,7 @@ for i in ii:
             data.loc[i,'ex_title3']=tmp   
 ```
 
-We can see that columns relate to region now has almost no missing value and we can drop those missing ones. 
+
 
 #### Exploratory Data Analysis
 
