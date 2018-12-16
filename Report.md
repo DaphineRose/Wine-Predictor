@@ -464,7 +464,7 @@ We run the sudo python app.py command to start the application.
 
 Users can be able to access the app and to get predictions on the link below;
 
-http://18.191.144.104/
+http://13.59.106.27/
 
 
 ## Reference
